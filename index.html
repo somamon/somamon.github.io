@@ -1,21 +1,347 @@
 <!DOCTYPE html>
-  <html lang="ja">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>相馬主水</title>
-  </head>
-  <body>
-      <h1>相馬主水</h1>
-      <p>アプリ開発を行っています。</p>
-      <h2>アプリ</h2>
-      <ul>
-          <li>Good Sleeping - Apple Watch専用 呼吸法ガイドアプリ</li>
-      </ul>
-      <h2>お問い合わせ</h2>
-      <p>メール: kaiseimondo@gmail.com</p>
-      <h2>プライバシーポリシー</h2>
-      <p>当社のアプリは個人情報を収集・送信しません。課金情報はAppleのStoreKitを
-  通じて処理され、開発者がアクセスすることはありません。</p>
-  </body>
-  </html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相馬主水 - App Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            color: #1d1d1f;
+            background: #000;
+            line-height: 1.8;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0a1628 0%, #1a1a2e 40%, #16213e 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+            animation: aurora 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes aurora {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, 3%) rotate(3deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            margin: 0 auto;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        /* Section */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+        }
+
+        /* App Section */
+        .app-section {
+            background: #000;
+            color: #fff;
+        }
+
+        .app-card {
+            background: linear-gradient(145deg, #111827, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            background: linear-gradient(135deg, #1e3a5f, #3b82f6);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+        }
+
+        .app-info h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .app-platform {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 0.8rem;
+        }
+
+        .app-description {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
+        }
+
+        .app-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 100px;
+            color: #60a5fa;
+        }
+
+        /* Contact */
+        .contact-section {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .contact-card a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-label {
+            font-size: 0.8rem;
+            color: #86868b;
+        }
+
+        /* Privacy */
+        .privacy-section {
+            background: #fff;
+            color: #1d1d1f;
+        }
+
+        .privacy-content {
+            font-size: 0.95rem;
+            color: #515154;
+            line-height: 2;
+        }
+
+        .privacy-content p + p {
+            margin-top: 1rem;
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 100px;
+            color: #16a34a;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background: #000;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .app-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem 1.5rem;
+            }
+
+            .app-features {
+                justify-content: center;
+            }
+
+            section {
+                padding: 3.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>相馬主水</h1>
+            <p class="subtitle">App Developer</p>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+    </section>
+
+    <section class="app-section">
+        <div class="container">
+            <p class="section-label">Products</p>
+            <h2 class="section-title" style="color: #fff;">アプリ</h2>
+            <div class="app-card">
+                <div class="app-icon">&#x1F320;</div>
+                <div class="app-info">
+                    <h3>Good Sleeping</h3>
+                    <p class="app-platform">Apple Watch</p>
+                    <p class="app-description">
+                        科学的に効果が実証された呼吸法で、質の高い睡眠とリラクゼーションをサポートする呼吸ガイドアプリ。
+                    </p>
+                    <div class="app-features">
+                        <span class="feature-tag">呼吸法ガイド</span>
+                        <span class="feature-tag">触覚フィードバック</span>
+                        <span class="feature-tag">常時表示対応</span>
+                        <span class="feature-tag">日本語 / English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container">
+            <p class="section-label">Contact</p>
+            <h2 class="section-title">お問い合わせ</h2>
+            <div class="contact-card">
+                <div class="contact-icon">&#x2709;</div>
+                <div>
+                    <p class="contact-label">メール</p>
+                    <a href="mailto:kaiseimondo@gmail.com">kaiseimondo@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="privacy-section" id="privacy">
+        <div class="container">
+            <p class="section-label">Privacy</p>
+            <h2 class="section-title">プライバシーポリシー</h2>
+            <div class="privacy-badge">&#x2714; データ収集なし</div>
+            <div class="privacy-content">
+                <p>当社のアプリは、お客様の個人情報を一切収集・送信しません。</p>
+                <p>アプリ内課金の決済処理は、Apple Inc.が提供するStoreKitを通じて安全に行われます。決済に関する情報は、Appleのプライバシーポリシーに基づいて管理され、開発者がこれらの情報にアクセスすることはありません。</p>
+                <p>本ポリシーに関するご質問は、上記のメールアドレスまでお問い合わせください。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 相馬主水. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
